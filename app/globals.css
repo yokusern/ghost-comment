@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --accent: #A78BFA;
+  --bg: #0d0d1a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(167, 139, 250, 0.3);
+}
