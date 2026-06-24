@@ -14,7 +14,7 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { projectId, text, rating, pageUrl, device } = await req.json()
+    const { projectId, text, rating, pageUrl, device, sid } = await req.json()
 
     if (!projectId || typeof projectId !== 'string') {
       return NextResponse.json({ error: 'projectId required' }, { status: 400, headers: CORS_HEADERS })
@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
       pageUrl: typeof pageUrl === 'string' ? pageUrl.slice(0, 500) : '',
       device: device === 'mobile' ? 'mobile' : 'desktop',
       sentiment: null,
+      sid: typeof sid === 'string' ? sid.slice(0, 16) : null,
       createdAt: Date.now(),
     }
 
@@ -63,6 +64,32 @@ export async function POST(req: NextRequest) {
       monthlyCount: isNewMonth ? 1 : FieldValue.increment(1),
       monthKey,
     })
+
+    // Slack通知（Pro + webhook設定済み）
+    if (project.slackWebhookUrl) {
+      const ratingEmoji = ['', '😡', '😕', '😐', '🙂', '😍'][feedback.rating ?? 0] || ''
+      const slackBody = {
+        text: `👻 *新しいフィードバック* — ${project.name}`,
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `👻 *新しいフィードバック* — ${project.name}\n${ratingEmoji} _${feedback.pageUrl}_`,
+            },
+          },
+          {
+            type: 'section',
+            text: { type: 'plain_text', text: feedback.text },
+          },
+        ],
+      }
+      fetch(project.slackWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(slackBody),
+      }).catch(() => {}) // fire-and-forget
+    }
 
     return NextResponse.json({ ok: true }, { headers: CORS_HEADERS })
   } catch (e) {

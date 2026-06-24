@@ -3,337 +3,363 @@ import type { Metadata } from 'next'
 import { CodeTabs, ComparisonTable } from '@/components/LP/CodeTabs'
 
 export const metadata: Metadata = {
-  title: 'Ghost Comment — エンジニアのための匿名フィードバック基盤',
-  description: 'scriptタグ1行、またはnpmパッケージで導入。Firebase設定ゼロ。ユーザーの本音を今日から収集。React / Next.js / Vue 対応。',
+  title: 'Ghost Comment — 1コンポーネントで、顧客の本音がわかる',
+  description: '3ヶ月で30個作って、収益ゼロだった。ユーザーが何を思っているかわからないから、何を直せばいいかわからない。それだけのことで、良いプロダクトが消える。',
   openGraph: {
-    title: 'Ghost Comment — エンジニアのための匿名フィードバック基盤',
-    description: 'scriptタグ1行で導入。Firebase設定ゼロ。ユーザーの本音を今日から収集。',
-    url: 'https://ghost-comment.vercel.app',
+    title: 'Ghost Comment — 1コンポーネントで、顧客の本音がわかる',
+    description: '匿名フィードバック基盤。scriptタグ1行 / Reactコンポーネント1つ。Firebase設定ゼロ。',
+    url: 'https://ghost-comment-six.vercel.app',
     siteName: 'Ghost Comment',
     locale: 'ja_JP',
     type: 'website',
   },
 }
 
-// ── Static sections ─────────────────────────────────────────────────────────
-
 const FEATURES = [
   {
     icon: '⚡',
     title: '2分で導入',
-    desc: 'scriptタグ1行。ReactコンポーネントならnpmなしでもOK。Firebase設定・サーバー構築は不要。',
+    body: 'scriptタグ1行。ReactならGhostCommentコンポーネント1つ。Firebase設定・サーバー構築は不要。',
   },
   {
     icon: '👻',
     title: '完全匿名',
-    desc: 'ユーザーはログイン不要、名前入力不要。匿名だから本音が集まる。収集するのはテキスト・デバイス・ページURLのみ。',
+    body: 'ログイン不要、名前入力不要。匿名だから本音が集まる。収集するのはテキスト・デバイス・ページURLのみ。',
   },
   {
     icon: '🧠',
     title: 'Claude AI 感情分析',
-    desc: 'フィードバックを自動でPositive / Negative / Neutralに分類。AIの分析は自分で実装すると月数千円のAPIコスト。',
+    body: 'フィードバックをPositive / Negative / Neutralに自動分類。Proに入れば毎週月曜にClaudeが要約を送信する。',
   },
   {
     icon: '📊',
     title: 'ダッシュボード',
-    desc: '日別バーチャート・感情円グラフ・キーワード分析・CSV出力。見たいデータを1画面で確認できる。',
+    body: '日別バーチャート・感情円グラフ・CSV出力。ブラウザを開けば全部見える。',
+  },
+  {
+    icon: '🔔',
+    title: 'Slack 通知（Pro）',
+    body: 'フィードバックが届いたら即Slackに通知。webhook URLを貼るだけで動く。',
   },
   {
     icon: '📈',
-    title: 'ベンチマーク比較（Coming Soon）',
-    desc: '「あなたのNPS、同カテゴリのSaaSと比べてどう？」自分だけのデータでは作れない業界比較が見られる。',
-  },
-  {
-    icon: '🔗',
-    title: 'Slack / Linear 連携（Coming Soon）',
-    desc: 'フィードバックが届いたら即Slack通知。ネガティブなフィードバックをLinearのIssueに自動変換。',
+    title: '業界ベンチマーク（Pro）',
+    body: '同カテゴリの平均スコアと自分のプロダクトを比較。1プロジェクトだけのデータでは絶対に持てない視点。',
   },
 ]
 
-const MOAT_FEATURES = [
+const MOAT = [
   {
-    title: 'ベンチマークデータ',
-    sub: 'データは自分では作れない',
-    desc: '1,000プロジェクトが集まれば「BtoBアプリの平均ネガティブ率は14%」という比較データが生まれる。自分1人で運用するフィードバック基盤では絶対に持てない資産。',
+    title: 'データネットワーク効果',
+    desc: '1,000プロジェクトが集まると「SaaS系アプリの平均ネガティブ率は14%」という比較データが生まれる。これは自分で実装しても永遠に持てない。',
   },
   {
-    title: 'AI週次サマリー（Pro）',
-    sub: 'Claudeが週1で要約',
-    desc: '「今週のフィードバック3件の共通テーマ：UIが分かりにくい」を自動生成。毎回ダッシュボードを確認しなくていい。',
+    title: '週次AI要約（Cron）',
+    desc: 'Claudeが毎週月曜にフィードバックを要約して送信。「今週のテーマ：UIが分かりにくい / 3件」。毎回ダッシュボードを確認しなくていい。',
   },
   {
-    title: 'スパムフィルタリング',
-    sub: 'テキスト分類モデル込み',
-    desc: '「aaaa」「test」など意味のない投稿を自動除去。これを自前で実装するにはMLモデルのトレーニングが必要。',
+    title: '匿名セッション追跡',
+    desc: 'Cookie不要、PII不要で、同じユーザーが重複投稿したかを検知する。実装するにはデバイスフィンガープリントの知識が要る。',
   },
   {
-    title: 'セッションID（匿名）',
-    sub: 'Cookieなしのユニーク計測',
-    desc: 'デバイス情報のハッシュで匿名セッションIDを生成。同じユーザーが何度も投稿したかを、個人情報なしで把握できる。',
+    title: 'Slack / Linear 統合',
+    desc: 'ネガティブなフィードバックをLinearのIssueに変換。これを自前で作ると3つのAPIを繋ぐ必要がある。',
   },
 ]
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0d0d1a] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0a14] text-white overflow-x-hidden">
 
       {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-4 border-b border-white/10 max-w-6xl mx-auto">
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <span>👻</span> Ghost Comment
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/docs" className="text-white/50 hover:text-white text-sm transition-colors">Docs</Link>
-          <Link href="#pricing" className="text-white/50 hover:text-white text-sm transition-colors">料金</Link>
-          <Link
-            href="/dashboard"
-            className="bg-[#A78BFA] text-white text-sm px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-          >
-            無料で始める
-          </Link>
+      <nav className="sticky top-0 z-30 bg-[#0a0a14]/95 backdrop-blur border-b border-white/8">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
+            <span>👻</span> Ghost Comment
+          </div>
+          <div className="flex items-center gap-5">
+            <Link href="/docs" className="text-white/40 hover:text-white text-sm transition-colors hidden sm:block">Docs</Link>
+            <Link href="#pricing" className="text-white/40 hover:text-white text-sm transition-colors hidden sm:block">料金</Link>
+            <Link
+              href="/dashboard"
+              className="text-sm px-5 py-2 rounded-xl font-semibold bg-white text-[#0a0a14] hover:bg-white/90 transition-all"
+            >
+              無料で始める
+            </Link>
+          </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="max-w-6xl mx-auto px-6 pt-16 pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Copy */}
+      {/* ── STORY HERO ───────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 pt-20 pb-14">
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#A78BFA]/15 border border-[#A78BFA]/30 rounded-full px-4 py-1.5 text-sm text-[#A78BFA] mb-6">
-              <span className="w-1.5 h-1.5 bg-[#A78BFA] rounded-full animate-pulse" />
-              エンジニアのための匿名フィードバック基盤
+            <div className="mb-8">
+              <p className="text-white/30 text-sm font-mono mb-3">// なぜ作ったか</p>
+              <blockquote className="border-l-2 border-[#A78BFA] pl-5">
+                <p className="text-3xl md:text-4xl font-bold leading-tight">
+                  3ヶ月で30個作った。<br />
+                  <span className="text-white/35">収益は¥0だった。</span>
+                </p>
+              </blockquote>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
-              <span className="text-[#A78BFA]">2分で導入。</span><br />
-              ユーザーの本音を、<br />
-              インフラゼロで収集する。
-            </h1>
-            <p className="text-white/55 text-lg leading-relaxed mb-8">
-              scriptタグ1行、またはReactコンポーネントで導入完了。<br />
-              Firebase設定、サーバー構築、維持コストはこちらが持つ。<br />
-              あなたはプロダクトの改善に集中できる。
+            <p className="text-white/55 leading-relaxed mb-4">
+              ユーザーが何を思っているかわからないから、何を直せばいいかわからない。
+              それだけのことで、良いプロダクトが消える。
+            </p>
+            <p className="text-white/55 leading-relaxed mb-8">
+              だから作った。
+              <strong className="text-white"> 1コンポーネント貼るだけで、顧客の本音がわかるツール。</strong>
+              自分のために作ったから、同じ悩みを持つエンジニアには確実に刺さる。
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/dashboard"
                 className="bg-[#A78BFA] text-white px-7 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity text-center"
               >
-                無料で始める
+                今すぐ試す（無料）
               </Link>
               <Link
                 href="/docs"
-                className="border border-white/20 text-white/70 px-7 py-3.5 rounded-xl font-semibold hover:bg-white/5 hover:text-white transition-all text-center"
+                className="border border-white/15 text-white/60 px-7 py-3.5 rounded-xl font-semibold hover:bg-white/5 hover:text-white transition-all text-center"
               >
-                ドキュメントを見る →
+                ドキュメントを読む →
               </Link>
             </div>
-            <p className="text-white/30 text-xs mt-4">クレジットカード不要 · Free プランは永久無料</p>
+            <p className="text-white/25 text-xs mt-4">クレジットカード不要 · Freeプランは永久無料</p>
           </div>
 
-          {/* Right: Code tabs */}
           <div>
             <CodeTabs />
-            <p className="text-white/30 text-xs mt-2 text-right">
-              YOUR_PROJECT_ID はダッシュボードからコピー
+            <p className="text-white/25 text-xs mt-2 text-right">
+              使い方は{' '}
+              <Link href="/docs" className="text-[#A78BFA]/60 hover:text-[#A78BFA]">/docs</Link>
+              {' '}に全部書いてある
             </p>
           </div>
         </div>
       </section>
 
-      {/* Social proof numbers */}
-      <section className="max-w-6xl mx-auto px-6 py-10 border-y border-white/8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {/* ── NUMBERS ──────────────────────────────────────────────────────────── */}
+      <section className="border-y border-white/8 py-10">
+        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { n: '< 2min', label: '導入時間' },
-            { n: '50KB', label: 'ウィジェットサイズ' },
-            { n: '0', label: '必要なFirebase設定' },
-            { n: '4', label: '対応フレームワーク' },
+            { n: '< 2min', sub: '導入時間' },
+            { n: '50KB', sub: 'ウィジェットサイズ' },
+            { n: '0', sub: 'Firebase設定' },
+            { n: '4+', sub: '対応フレームワーク' },
           ].map(s => (
-            <div key={s.label}>
+            <div key={s.sub}>
               <div className="text-2xl font-bold text-[#A78BFA]">{s.n}</div>
-              <div className="text-xs text-white/40 mt-1">{s.label}</div>
+              <div className="text-xs text-white/35 mt-1">{s.sub}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Why not DIY */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="max-w-2xl mx-auto text-center mb-12">
-          <h2 className="text-2xl font-bold mb-3">自前で作れる。でも、作らなくていい。</h2>
-          <p className="text-white/50 text-sm leading-relaxed">
-            Firebase + API + UI + 維持コストで20時間以上かかるものを、<br />
-            その20時間をプロダクトの改善に使った方が価値がある。
+      {/* ── WHY NOT DIY ──────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-20">
+        <div className="text-center max-w-xl mx-auto mb-10">
+          <p className="text-[#A78BFA] text-xs font-mono mb-3">// 自前で作れる。でも、作らなくていい。</p>
+          <h2 className="text-2xl font-bold mb-3">その20時間、プロダクト改善に使った方がいい</h2>
+          <p className="text-white/45 text-sm leading-relaxed">
+            Firebase + API + UI + 維持コストで最低20時間かかる。<br />
+            Ghost Comment なら2分で動く。
           </p>
         </div>
-        <div className="bg-white/4 border border-white/10 rounded-2xl p-6">
+        <div className="bg-white/3 border border-white/8 rounded-2xl p-6">
           <ComparisonTable />
         </div>
       </section>
 
-      {/* Features */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <h2 className="text-2xl font-bold text-center mb-12">機能一覧</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* ── FEATURES ─────────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 pb-20">
+        <h2 className="text-xl font-bold mb-8 text-center">機能</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map(f => (
-            <div key={f.title} className="bg-white/4 border border-white/10 rounded-2xl p-5 hover:bg-white/7 transition-colors">
-              <div className="text-2xl mb-3">{f.icon}</div>
-              <h3 className="font-semibold text-white mb-1.5">{f.title}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
+            <div key={f.title} className="border border-white/8 rounded-xl p-5 hover:border-white/18 transition-colors">
+              <div className="text-xl mb-3">{f.icon}</div>
+              <h3 className="font-semibold mb-1.5">{f.title}</h3>
+              <p className="text-white/45 text-sm leading-relaxed">{f.body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Moat — Why Ghost Comment wins long-term */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <div className="bg-gradient-to-br from-[#A78BFA]/10 to-transparent border border-[#A78BFA]/20 rounded-2xl p-8 md:p-12">
-          <div className="max-w-2xl mx-auto text-center mb-10">
-            <p className="text-[#A78BFA] text-sm font-semibold mb-3">なぜ Ghost Comment を使い続けるのか</p>
-            <h2 className="text-2xl font-bold mb-3">自前実装では持てないアドバンテージ</h2>
-            <p className="text-white/50 text-sm">
+      {/* ── MOAT ─────────────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 pb-20">
+        <div className="border border-[#A78BFA]/20 rounded-2xl overflow-hidden">
+          <div className="bg-[#A78BFA]/8 px-8 py-6 border-b border-[#A78BFA]/15">
+            <p className="text-xs font-mono text-[#A78BFA] mb-2">// 自前実装では持てないアドバンテージ</p>
+            <h2 className="text-xl font-bold">なぜこれは競合が作れないのか</h2>
+            <p className="text-white/45 text-sm mt-2">
               基本的な収集機能は誰でも作れる。<br />
               でも、1,000プロジェクト分のデータが生み出すインサイトは作れない。
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {MOAT_FEATURES.map(m => (
-              <div key={m.title} className="bg-white/5 border border-white/10 rounded-xl p-5">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-semibold text-white">{m.title}</h3>
-                  <span className="text-xs text-white/30 ml-2 shrink-0">{m.sub}</span>
-                </div>
-                <p className="text-white/50 text-sm leading-relaxed">{m.desc}</p>
+          <div className="grid md:grid-cols-2 gap-0">
+            {MOAT.map((m, i) => (
+              <div
+                key={m.title}
+                className={`p-6 ${i % 2 === 0 ? 'md:border-r border-white/5' : ''} ${i < 2 ? 'border-b border-white/5' : ''}`}
+              >
+                <h3 className="font-semibold text-white mb-2">{m.title}</h3>
+                <p className="text-white/45 text-sm leading-relaxed">{m.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <h2 className="text-2xl font-bold text-center mb-12">3ステップで完了</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 pb-20">
+        <h2 className="text-xl font-bold text-center mb-10">3ステップ</h2>
+        <div className="flex flex-col md:flex-row gap-4">
           {[
-            { n: '01', icon: '🔑', title: 'プロジェクトを作成', desc: 'ダッシュボードにGoogleログイン。プロジェクト名とURLを入力するだけ。1分。' },
-            { n: '02', icon: '📋', title: 'コードを貼る', desc: '発行された1行のscriptタグをHTMLに貼る。ReactならGhostCommentコンポーネントを追加。' },
-            { n: '03', icon: '📬', title: '本音が届く', desc: '訪問者が👻ボタンをクリック → 匿名で送信 → ダッシュボードに即時反映。' },
-          ].map(step => (
-            <div key={step.n} className="bg-white/4 border border-white/10 rounded-2xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">{step.icon}</span>
-                <span className="text-[#A78BFA] text-sm font-bold">{step.n}</span>
-              </div>
-              <h3 className="font-bold mb-2">{step.title}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{step.desc}</p>
+            { step: '01', title: 'プロジェクトを作る', desc: 'Googleログイン → プロジェクト名とURL入力 → Project IDを取得。1分。' },
+            { step: '02', title: 'コードを1行貼る', desc: 'scriptタグ or GhostCommentコンポーネント。ドキュメントに全フレームワーク対応の例がある。' },
+            { step: '03', title: '本音が届く', desc: '👻ボタンをクリック → 匿名送信 → ダッシュボードに即反映。AIが感情を自動分類。' },
+          ].map(s => (
+            <div key={s.step} className="flex-1 border border-white/8 rounded-xl p-5">
+              <p className="font-mono text-sm text-[#A78BFA]/50 mb-2">{s.step}</p>
+              <h3 className="font-semibold mb-1.5">{s.title}</h3>
+              <p className="text-white/45 text-sm leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Widget preview */}
-      <section className="max-w-3xl mx-auto px-6 pb-20">
-        <h2 className="text-xl font-bold text-center mb-6">こんなウィジェットが表示される</h2>
-        <div className="bg-white/4 border border-white/10 rounded-2xl p-4 relative overflow-hidden">
-          <div className="bg-[#0d0d1a] rounded-xl h-32 flex items-center justify-center text-white/15 text-sm border border-white/8">
+      {/* ── WIDGET PREVIEW ───────────────────────────────────────────────────── */}
+      <section className="max-w-2xl mx-auto px-6 pb-20">
+        <h2 className="text-lg font-bold text-center mb-6">こんなウィジェットが表示される</h2>
+        <div className="border border-white/8 rounded-2xl overflow-hidden">
+          <div className="bg-[#13131f] h-24 flex items-center justify-center text-white/10 text-xs border-b border-white/5">
             あなたのサービス
           </div>
-          <div className="absolute bottom-8 right-8 flex flex-col items-end gap-2">
-            <div className="bg-[#16162a] border border-[#A78BFA]/30 rounded-2xl p-4 w-60 shadow-xl">
-              <p className="text-white text-xs font-semibold mb-2">フィードバックを送る</p>
-              <div className="flex justify-between mb-2 text-base">😡 😕 😐 🙂 😍</div>
-              <div className="bg-white/8 rounded-lg h-12 mb-2 border border-white/10 px-3 py-2">
-                <span className="text-white/20 text-xs">本音を聞かせてください…</span>
+          <div className="relative bg-[#0a0a14] h-72">
+            <div className="absolute bottom-5 right-5 flex flex-col items-end gap-3">
+              <div className="bg-[#16162a] border border-[#A78BFA]/30 rounded-2xl p-4 w-64 shadow-2xl">
+                <p className="text-white text-xs font-semibold mb-2">フィードバックを送る</p>
+                <div className="flex justify-between mb-3 text-lg">
+                  {['😡','😕','😐','🙂','😍'].map(e => (
+                    <span key={e}>{e}</span>
+                  ))}
+                </div>
+                <div className="bg-white/6 border border-white/10 rounded-lg h-14 px-3 py-2 mb-3">
+                  <span className="text-white/20 text-xs">本音を聞かせてください…</span>
+                </div>
+                <div className="py-2 text-center text-white text-xs font-semibold rounded-lg bg-[#A78BFA]">
+                  送信する
+                </div>
+                <p className="text-center text-white/15 text-[10px] mt-2">Powered by Ghost Comment</p>
               </div>
-              <div className="bg-[#A78BFA] rounded-lg py-1.5 text-center text-white text-xs font-semibold">送信する</div>
-              <p className="text-center text-white/20 text-[10px] mt-1.5">Powered by Ghost Comment</p>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-lg bg-[#A78BFA]">
+                👻
+              </div>
             </div>
-            <div className="w-11 h-11 bg-[#A78BFA] rounded-full flex items-center justify-center text-xl shadow-lg">👻</div>
           </div>
         </div>
-        <p className="text-center text-white/30 text-xs mt-3">
-          color・position・promptText はカスタマイズ可能 →{' '}
-          <Link href="/docs#customization" className="text-[#A78BFA]/70 hover:text-[#A78BFA]">Docs</Link>
+        <p className="text-center text-white/25 text-xs mt-3">
+          color / position / promptText は自由に変更可能{' '}
+          <Link href="/docs#customization" className="text-[#A78BFA]/60 hover:text-[#A78BFA]">→ Docs</Link>
         </p>
       </section>
 
-      {/* Pricing */}
+      {/* ── PRICING ──────────────────────────────────────────────────────────── */}
       <section id="pricing" className="max-w-3xl mx-auto px-6 pb-24">
-        <h2 className="text-2xl font-bold text-center mb-3">料金</h2>
-        <p className="text-center text-white/40 text-sm mb-10">AIサービスにしては珍しく、Freeで本当に使える</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white/4 border border-white/15 rounded-2xl p-6">
-            <h3 className="font-bold text-xl mb-1">Free</h3>
-            <p className="text-3xl font-bold mb-1">¥0</p>
-            <p className="text-white/40 text-sm mb-6">ずっと無料</p>
-            <ul className="space-y-2 text-sm text-white/60 mb-6">
-              <li>✓ 1プロジェクト</li>
-              <li>✓ 月30フィードバック</li>
-              <li>✓ ダッシュボード（グラフ含む）</li>
-              <li className="text-white/25">✗ AI 感情分析</li>
-              <li className="text-white/25">✗ CSV 出力</li>
-              <li className="text-white/25">✗ 「Powered by」非表示</li>
+        <h2 className="text-xl font-bold text-center mb-2">料金</h2>
+        <p className="text-center text-white/35 text-sm mb-10">AIサービスにしては珍しく、Freeで本当に使える</p>
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="border border-white/10 rounded-2xl p-6">
+            <h3 className="font-bold text-lg mb-1">Free</h3>
+            <p className="text-3xl font-bold mb-0.5">¥0</p>
+            <p className="text-white/30 text-xs mb-6">ずっと無料</p>
+            <ul className="space-y-2 text-sm mb-7">
+              {[
+                ['1プロジェクト', true],
+                ['月30フィードバック', true],
+                ['ダッシュボード（グラフ含む）', true],
+                ['AI感情分析', false],
+                ['週次AIサマリー', false],
+                ['Slack通知', false],
+                ['CSV出力', false],
+              ].map(([label, active]) => (
+                <li key={label as string} className={active ? 'text-white/70' : 'text-white/20'}>
+                  {active ? '✓' : '✗'} {label}
+                </li>
+              ))}
             </ul>
             <Link
               href="/dashboard"
-              className="block text-center border border-white/20 text-white/70 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 transition-colors"
+              className="block text-center border border-white/15 text-white/60 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-white transition-all"
             >
               無料で始める
             </Link>
           </div>
-          <div className="bg-[#A78BFA]/10 border border-[#A78BFA]/40 rounded-2xl p-6 relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#A78BFA] text-white text-xs px-3 py-1 rounded-full font-semibold">
+          <div className="border border-[#A78BFA]/40 rounded-2xl p-6 relative bg-[#A78BFA]/5">
+            <div className="absolute -top-3 left-6 bg-[#A78BFA] text-white text-xs px-3 py-1 rounded-full font-semibold">
               おすすめ
             </div>
-            <h3 className="font-bold text-xl mb-1 text-[#A78BFA]">Pro</h3>
-            <p className="text-3xl font-bold mb-1">¥980<span className="text-base font-normal text-white/50">/月</span></p>
-            <p className="text-white/40 text-sm mb-6">いつでもキャンセル可能</p>
-            <ul className="space-y-2 text-sm text-white/80 mb-6">
-              <li>✓ 複数プロジェクト管理</li>
-              <li>✓ フィードバック無制限</li>
-              <li>✓ Claude AI 感情分析</li>
-              <li>✓ CSV 出力</li>
-              <li>✓ 「Powered by」非表示</li>
-              <li>✓ 週次AIサマリー（近日）</li>
+            <h3 className="font-bold text-lg mb-1 text-[#A78BFA]">Pro</h3>
+            <p className="text-3xl font-bold mb-0.5">¥980<span className="text-sm font-normal text-white/40">/月</span></p>
+            <p className="text-white/30 text-xs mb-6">いつでもキャンセル可能</p>
+            <ul className="space-y-2 text-sm mb-7 text-white/75">
+              {[
+                '複数プロジェクト管理',
+                'フィードバック無制限',
+                'Claude AI 感情分析',
+                '週次AIサマリー（毎週月曜）',
+                'Slack通知',
+                'CSV出力',
+                '「Powered by」非表示',
+                '業界ベンチマーク比較',
+              ].map(label => (
+                <li key={label}>✓ {label}</li>
+              ))}
             </ul>
             <Link
               href="/dashboard"
               className="block text-center bg-[#A78BFA] text-white py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity"
             >
-              Pro で始める
+              Proで始める
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="max-w-3xl mx-auto px-6 pb-24 text-center">
-        <div className="bg-white/4 border border-white/10 rounded-2xl p-10">
-          <div className="text-4xl mb-4">👻</div>
-          <h2 className="text-2xl font-bold mb-3">今日からフィードバックを集め始める</h2>
-          <p className="text-white/50 text-sm mb-7">2分あれば、今すぐ動くものが手に入る。</p>
-          <Link
-            href="/dashboard"
-            className="inline-block bg-[#A78BFA] text-white px-8 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-          >
-            無料で始める（クレカ不要）
-          </Link>
-        </div>
+      {/* ── FINAL CTA ────────────────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 pb-28 text-center">
+        <p className="text-white/25 font-mono text-sm mb-5">// 最後に一言</p>
+        <h2 className="text-3xl font-bold mb-4">
+          作ったプロダクトが何を<br />
+          求められているか、知っていますか。
+        </h2>
+        <p className="text-white/45 mb-8 leading-relaxed">
+          ユーザーは正直に言わない。匿名なら言う。<br />
+          Ghost Comment を今日から使えば、明日には答えが届いている。
+        </p>
+        <Link
+          href="/dashboard"
+          className="inline-block bg-[#A78BFA] text-white px-10 py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity"
+        >
+          今日から始める（無料）
+        </Link>
+        <p className="text-white/20 text-xs mt-4">クレジットカード不要 · 2分で導入完了</p>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 px-6 py-8">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 font-bold">
+      <footer className="border-t border-white/8 py-8">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="font-bold flex items-center gap-2">
             <span>👻</span> Ghost Comment
           </div>
-          <div className="flex gap-6 text-sm text-white/40">
+          <div className="flex gap-6 text-sm text-white/35">
             <Link href="/docs" className="hover:text-white transition-colors">Docs</Link>
-            <a href="https://x.com/Yoko_ai_dev" target="_blank" rel="noopener" className="hover:text-white transition-colors">X</a>
-            <a href="https://note.com/zen_ai_logic" target="_blank" rel="noopener" className="hover:text-white transition-colors">note</a>
-            <a href="https://yokoportofolio.vercel.app" target="_blank" rel="noopener" className="hover:text-white transition-colors">Portfolio</a>
+            <a href="https://x.com/Yoko_ai_dev" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">X</a>
+            <a href="https://note.com/zen_ai_logic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">note</a>
+            <a href="https://yokoportofolio.vercel.app" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Portfolio</a>
           </div>
-          <p className="text-white/20 text-xs">Made by YO-KO</p>
+          <p className="text-white/15 text-xs">Made by YO-KO</p>
         </div>
       </footer>
     </div>

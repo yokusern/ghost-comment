@@ -15,10 +15,13 @@ export interface Project {
   name: string
   url: string
   ownerUid: string
+  plan: 'free' | 'pro'
   createdAt: number
   feedbackCount: number
   monthlyCount: number
   monthKey: string // "2026-06"
+  slackWebhookUrl?: string
+  notifyEmail?: string
 }
 
 export interface Feedback {
