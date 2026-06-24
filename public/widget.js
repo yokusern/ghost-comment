@@ -14,6 +14,18 @@
   var promptText = (script && script.getAttribute('data-prompt')) || 'フィードバックを送る';
   var device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 
+  // Anonymous session fingerprint — no cookies, no PII
+  // Hashes UA + screen resolution + timezone to a 8-char hex ID
+  function sessionId() {
+    var raw = [navigator.userAgent, screen.width, screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
+    var h = 0;
+    for (var i = 0; i < raw.length; i++) {
+      h = (Math.imul(31, h) + raw.charCodeAt(i)) | 0;
+    }
+    return (h >>> 0).toString(16).padStart(8, '0');
+  }
+  var sid = sessionId();
+
   // ── Styles ──────────────────────────────────────────────────────────────
   var css = [
     '#gc-btn{',
@@ -146,6 +158,7 @@
         rating: selectedRating,
         pageUrl: location.href,
         device: device,
+        sid: sid,
       }),
     })
     .then(function() {
