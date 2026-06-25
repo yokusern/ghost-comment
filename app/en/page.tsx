@@ -1,73 +1,91 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { CodeTabs, ComparisonTable } from '@/components/LP/CodeTabs'
+import { CodeTabs } from '@/components/LP/CodeTabs'
 
 export const metadata: Metadata = {
-  title: 'Ghost Comment — 1コンポーネントで、顧客の本音がわかる',
-  description: '3ヶ月で30個作って、収益ゼロだった。ユーザーが何を思っているかわからないから、何を直せばいいかわからない。それだけのことで、良いプロダクトが消える。',
+  title: 'Ghost Comment — Anonymous feedback for your product',
+  description: 'One script tag. Real user feedback. AI-powered sentiment analysis. No Firebase setup. No server.',
   openGraph: {
-    title: 'Ghost Comment — 1コンポーネントで、顧客の本音がわかる',
-    description: '匿名フィードバック基盤。scriptタグ1行 / Reactコンポーネント1つ。Firebase設定ゼロ。',
-    url: 'https://ghost-comment-six.vercel.app',
+    title: 'Ghost Comment — Anonymous feedback for your product',
+    description: 'One script tag. Real user feedback. AI-powered sentiment analysis.',
+    url: 'https://ghost-comment-six.vercel.app/en',
     siteName: 'Ghost Comment',
-    locale: 'ja_JP',
+    locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ghost Comment — Anonymous feedback for your product',
+    description: 'One script tag. Real user feedback. No Firebase setup.',
+  },
+  alternates: {
+    canonical: 'https://ghost-comment-six.vercel.app/en',
+    languages: { 'ja': 'https://ghost-comment-six.vercel.app' },
   },
 }
 
 const FEATURES = [
   {
     icon: '⚡',
-    title: '2分で導入',
-    body: 'scriptタグ1行。ReactならGhostCommentコンポーネント1つ。Firebase設定・サーバー構築は不要。',
+    title: '2 minutes to ship',
+    body: 'One script tag or one React component. No Firebase config, no server, no infrastructure decisions.',
   },
   {
     icon: '👻',
-    title: '完全匿名',
-    body: 'ログイン不要、名前入力不要。匿名だから本音が集まる。収集するのはテキスト・デバイス・ページURLのみ。',
+    title: 'Fully anonymous',
+    body: 'No login. No name required. Anonymous means honest. We store text, device type, and page URL — nothing else.',
   },
   {
     icon: '🧠',
-    title: 'Claude AI 感情分析',
-    body: 'フィードバックをPositive / Negative / Neutralに自動分類。Proに入れば毎週月曜にClaudeが要約を送信する。',
+    title: 'Claude AI sentiment',
+    body: 'Auto-classify feedback as Positive / Negative / Neutral. Pro users get a weekly Claude-generated digest every Monday.',
   },
   {
     icon: '📊',
-    title: 'ダッシュボード',
-    body: '日別バーチャート・感情円グラフ・CSV出力。ブラウザを開けば全部見える。',
+    title: 'Dashboard',
+    body: 'Daily bar chart, sentiment pie chart, CSV export. Open your browser and everything is there.',
   },
   {
     icon: '🔔',
-    title: 'Slack 通知（Pro）',
-    body: 'フィードバックが届いたら即Slackに通知。webhook URLを貼るだけで動く。',
+    title: 'Slack alerts (Pro)',
+    body: 'Instant Slack notification the moment feedback arrives. Paste your webhook URL, done.',
   },
   {
     icon: '📈',
-    title: '業界ベンチマーク（Pro）',
-    body: '同カテゴリの平均スコアと自分のプロダクトを比較。1プロジェクトだけのデータでは絶対に持てない視点。',
+    title: 'Industry benchmark (Pro)',
+    body: 'Compare your sentiment scores against projects in the same category. Data your self-hosted solution can never produce.',
   },
 ]
 
 const MOAT = [
   {
-    title: 'データネットワーク効果',
-    desc: 'プロジェクトが増えるほど、業界全体の傾向が見えてくる。自前では永遠に持てないデータが、ここに集まる。',
+    title: 'Data network effect',
+    desc: 'As more projects join, industry-wide trends emerge — "SaaS apps average 14% negative rate." No solo implementation ever produces this.',
   },
   {
-    title: '週次AI要約（Cron）',
-    desc: 'Claudeが毎週月曜にフィードバックを要約して送信。「今週のテーマ：UIが分かりにくい / 3件」。毎回ダッシュボードを確認しなくていい。',
+    title: 'Weekly AI digest (Cron)',
+    desc: 'Claude summarizes last week\'s feedback every Monday. "Main theme: confusing UI / 3 mentions." No dashboard visits required.',
   },
   {
-    title: '匿名セッション追跡',
-    desc: 'Cookie不要、PII不要で、同じユーザーが重複投稿したかを検知する。実装するにはデバイスフィンガープリントの知識が要る。',
+    title: 'Anonymous session tracking',
+    desc: 'Detects duplicate submissions without cookies or PII. Requires device fingerprinting knowledge to build yourself.',
   },
   {
-    title: 'Slack / Linear 統合',
-    desc: 'ネガティブなフィードバックをLinearのIssueに変換。これを自前で作ると3つのAPIを繋ぐ必要がある。',
+    title: 'Slack / Linear integration',
+    desc: 'Convert negative feedback into Linear issues. Self-hosting means wiring 3 different APIs together.',
   },
 ]
 
-export default function LandingPage() {
+const COMPARISON = [
+  { item: 'Setup time', diy: '20+ hours (Firebase + API + UI)', gc: '2 minutes', win: true },
+  { item: 'Infrastructure', diy: 'You maintain Firebase', gc: 'We handle it', win: true },
+  { item: 'AI sentiment', diy: 'Build Anthropic API integration', gc: 'Built into dashboard (Pro)', win: true },
+  { item: 'Framework support', diy: 'Build your own adapters', gc: 'HTML / React / Next.js / Vue', win: true },
+  { item: 'Monthly cost', diy: 'Firebase + dev time', gc: '$0 Free / $10 Pro', win: true },
+  { item: 'Code ownership', diy: 'Full control', gc: 'Hosted only', win: false },
+]
+
+export default function EnLandingPage() {
   return (
     <div className="min-h-screen bg-[#0a0a14] text-white overflow-x-hidden">
 
@@ -79,68 +97,65 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/docs" className="text-white/40 hover:text-white text-sm transition-colors hidden sm:block">Docs</Link>
-            <Link href="#pricing" className="text-white/40 hover:text-white text-sm transition-colors hidden sm:block">料金</Link>
+            <Link href="#pricing" className="text-white/40 hover:text-white text-sm transition-colors hidden sm:block">Pricing</Link>
             {/* Language toggle */}
             <div className="flex items-center border border-white/15 rounded-lg overflow-hidden text-xs">
-              <span className="px-2.5 py-1.5 bg-white/10 text-white font-medium">🇯🇵</span>
+              <Link href="/" className="px-2.5 py-1.5 text-white/40 hover:bg-white/8 transition-colors">🇯🇵</Link>
               <span className="w-px h-4 bg-white/15" />
-              <Link href="/en" className="px-2.5 py-1.5 text-white/40 hover:bg-white/8 transition-colors">🇺🇸</Link>
+              <span className="px-2.5 py-1.5 bg-white/10 text-white font-medium">🇺🇸</span>
             </div>
             <Link
               href="/dashboard"
               className="text-sm px-5 py-2 rounded-xl font-semibold bg-white text-[#0a0a14] hover:bg-white/90 transition-all"
             >
-              無料で始める
+              Start Free
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* ── STORY HERO ───────────────────────────────────────────────────────── */}
+      {/* ── HERO ─────────────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-14">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <div className="mb-8">
-              <p className="text-white/30 text-sm font-mono mb-3">// なぜ作ったか</p>
-              <blockquote className="border-l-2 border-[#A78BFA] pl-5">
-                <p className="text-3xl md:text-4xl font-bold leading-tight">
-                  3ヶ月で30個作った。<br />
-                  <span className="text-white/35">収益は¥0だった。</span>
-                </p>
-              </blockquote>
-            </div>
+            <p className="text-white/30 text-sm font-mono mb-3">// why I built this</p>
+            <blockquote className="border-l-2 border-[#A78BFA] pl-5 mb-8">
+              <p className="text-3xl md:text-4xl font-bold leading-tight">
+                I built 30 apps in 3 months.<br />
+                <span className="text-white/35">Revenue: $0.</span>
+              </p>
+            </blockquote>
             <p className="text-white/55 leading-relaxed mb-4">
-              ユーザーが何を思っているかわからないから、何を直せばいいかわからない。
-              それだけのことで、良いプロダクトが消える。
+              I had no idea what users thought. No feedback. No direction.
+              That&apos;s why good products die.
             </p>
             <p className="text-white/55 leading-relaxed mb-8">
-              だから作った。
-              <strong className="text-white"> 1コンポーネント貼るだけで、顧客の本音がわかるツール。</strong>
-              自分のために作ったから、同じ悩みを持つエンジニアには確実に刺さる。
+              So I built Ghost Comment.{' '}
+              <strong className="text-white">One component. Real feedback. Anonymous.</strong>{' '}
+              Built it for myself — which means it solves a problem engineers actually have.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/dashboard"
                 className="bg-[#A78BFA] text-white px-7 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity text-center"
               >
-                今すぐ試す（無料）
+                Try Free
               </Link>
               <Link
                 href="/docs"
                 className="border border-white/15 text-white/60 px-7 py-3.5 rounded-xl font-semibold hover:bg-white/5 hover:text-white transition-all text-center"
               >
-                ドキュメントを読む →
+                Read Docs →
               </Link>
             </div>
-            <p className="text-white/25 text-xs mt-4">クレジットカード不要 · Freeプランは永久無料</p>
+            <p className="text-white/25 text-xs mt-4">No credit card · Free plan is free forever</p>
           </div>
 
           <div>
             <CodeTabs />
             <p className="text-white/25 text-xs mt-2 text-right">
-              使い方は{' '}
+              Full integration guide at{' '}
               <Link href="/docs" className="text-[#A78BFA]/60 hover:text-[#A78BFA]">/docs</Link>
-              {' '}に全部書いてある
             </p>
           </div>
         </div>
@@ -150,10 +165,10 @@ export default function LandingPage() {
       <section className="border-y border-white/8 py-10">
         <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { n: '< 2min', sub: '導入時間' },
-            { n: '50KB', sub: 'ウィジェットサイズ' },
-            { n: '0', sub: 'Firebase設定' },
-            { n: '4+', sub: '対応フレームワーク' },
+            { n: '< 2min', sub: 'setup time' },
+            { n: '50KB', sub: 'widget size' },
+            { n: '0', sub: 'Firebase configs' },
+            { n: '4+', sub: 'frameworks' },
           ].map(s => (
             <div key={s.sub}>
               <div className="text-2xl font-bold text-[#A78BFA]">{s.n}</div>
@@ -166,21 +181,40 @@ export default function LandingPage() {
       {/* ── WHY NOT DIY ──────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center max-w-xl mx-auto mb-10">
-          <p className="text-[#A78BFA] text-xs font-mono mb-3">// 自前で作れる。でも、作らなくていい。</p>
-          <h2 className="text-2xl font-bold mb-3">その20時間、プロダクト改善に使った方がいい</h2>
+          <p className="text-[#A78BFA] text-xs font-mono mb-3">// you could build it. you shouldn&apos;t.</p>
+          <h2 className="text-2xl font-bold mb-3">Spend those 20 hours on your product instead</h2>
           <p className="text-white/45 text-sm leading-relaxed">
-            Firebase + API + UI + 維持コストで最低20時間かかる。<br />
-            Ghost Comment なら2分で動く。
+            Firebase + API + UI + maintenance is 20+ hours minimum.<br />
+            Ghost Comment takes 2 minutes.
           </p>
         </div>
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-6">
-          <ComparisonTable />
+        <div className="bg-white/3 border border-white/8 rounded-2xl p-6 overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-white/10">
+                <th className="text-left py-3 pr-6 text-white/40 font-normal"></th>
+                <th className="text-left py-3 pr-6 text-white/40 font-normal">Build it yourself</th>
+                <th className="text-left py-3 text-[#A78BFA] font-semibold">Ghost Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {COMPARISON.map(r => (
+                <tr key={r.item} className="border-b border-white/5">
+                  <td className="py-3 pr-6 text-white/60 text-xs">{r.item}</td>
+                  <td className="py-3 pr-6 text-white/40 text-xs">{r.diy}</td>
+                  <td className={`py-3 text-xs ${r.win ? 'text-green-400' : 'text-white/60'}`}>
+                    {r.win && <span className="mr-1">✓</span>}{r.gc}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
       {/* ── FEATURES ─────────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 pb-20">
-        <h2 className="text-xl font-bold mb-8 text-center">機能</h2>
+        <h2 className="text-xl font-bold mb-8 text-center">Features</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map(f => (
             <div key={f.title} className="border border-white/8 rounded-xl p-5 hover:border-white/18 transition-colors">
@@ -196,11 +230,11 @@ export default function LandingPage() {
       <section className="max-w-5xl mx-auto px-6 pb-20">
         <div className="border border-[#A78BFA]/20 rounded-2xl overflow-hidden">
           <div className="bg-[#A78BFA]/8 px-8 py-6 border-b border-[#A78BFA]/15">
-            <p className="text-xs font-mono text-[#A78BFA] mb-2">// 自前実装では持てないアドバンテージ</p>
-            <h2 className="text-xl font-bold">なぜこれは競合が作れないのか</h2>
+            <p className="text-xs font-mono text-[#A78BFA] mb-2">// what a self-hosted solution can&apos;t do</p>
+            <h2 className="text-xl font-bold">Why competitors can&apos;t replicate this</h2>
             <p className="text-white/45 text-sm mt-2">
-              基本的な収集機能は誰でも作れる。<br />
-              でも、1,000プロジェクト分のデータが生み出すインサイトは作れない。
+              Anyone can build the basic collection feature.<br />
+              But the insights from thousands of projects? That&apos;s not replicable.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-0">
@@ -219,12 +253,12 @@ export default function LandingPage() {
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 pb-20">
-        <h2 className="text-xl font-bold text-center mb-10">3ステップ</h2>
+        <h2 className="text-xl font-bold text-center mb-10">3 steps</h2>
         <div className="flex flex-col md:flex-row gap-4">
           {[
-            { step: '01', title: 'プロジェクトを作る', desc: 'Googleログイン → プロジェクト名とURL入力 → Project IDを取得。1分。' },
-            { step: '02', title: 'コードを1行貼る', desc: 'scriptタグ or GhostCommentコンポーネント。ドキュメントに全フレームワーク対応の例がある。' },
-            { step: '03', title: '本音が届く', desc: '👻ボタンをクリック → 匿名送信 → ダッシュボードに即反映。AIが感情を自動分類。' },
+            { step: '01', title: 'Create a project', desc: 'Sign in with Google → Enter your project name and URL → Get your Project ID. 1 minute.' },
+            { step: '02', title: 'Paste one line', desc: 'A script tag, or the GhostComment component. The docs have examples for every framework.' },
+            { step: '03', title: 'Feedback arrives', desc: 'Users click 👻 → submit anonymously → instantly in your dashboard. AI classifies the sentiment.' },
           ].map(s => (
             <div key={s.step} className="flex-1 border border-white/8 rounded-xl p-5">
               <p className="font-mono text-sm text-[#A78BFA]/50 mb-2">{s.step}</p>
@@ -237,25 +271,23 @@ export default function LandingPage() {
 
       {/* ── WIDGET PREVIEW ───────────────────────────────────────────────────── */}
       <section className="max-w-2xl mx-auto px-6 pb-20">
-        <h2 className="text-lg font-bold text-center mb-6">こんなウィジェットが表示される</h2>
+        <h2 className="text-lg font-bold text-center mb-6">What it looks like</h2>
         <div className="border border-white/8 rounded-2xl overflow-hidden">
           <div className="bg-[#13131f] h-24 flex items-center justify-center text-white/10 text-xs border-b border-white/5">
-            あなたのサービス
+            your product
           </div>
           <div className="relative bg-[#0a0a14] h-72">
             <div className="absolute bottom-5 right-5 flex flex-col items-end gap-3">
               <div className="bg-[#16162a] border border-[#A78BFA]/30 rounded-2xl p-4 w-64 shadow-2xl">
-                <p className="text-white text-xs font-semibold mb-2">フィードバックを送る</p>
+                <p className="text-white text-xs font-semibold mb-2">Send Feedback</p>
                 <div className="flex justify-between mb-3 text-lg">
-                  {['😡','😕','😐','🙂','😍'].map(e => (
-                    <span key={e}>{e}</span>
-                  ))}
+                  {['😡','😕','😐','🙂','😍'].map(e => <span key={e}>{e}</span>)}
                 </div>
                 <div className="bg-white/6 border border-white/10 rounded-lg h-14 px-3 py-2 mb-3">
-                  <span className="text-white/20 text-xs">本音を聞かせてください…</span>
+                  <span className="text-white/20 text-xs">Tell us what you really think...</span>
                 </div>
                 <div className="py-2 text-center text-white text-xs font-semibold rounded-lg bg-[#A78BFA]">
-                  送信する
+                  Submit
                 </div>
                 <p className="text-center text-white/15 text-[10px] mt-2">Powered by Ghost Comment</p>
               </div>
@@ -266,29 +298,29 @@ export default function LandingPage() {
           </div>
         </div>
         <p className="text-center text-white/25 text-xs mt-3">
-          color / position / promptText は自由に変更可能{' '}
+          color / position / prompt are customizable{' '}
           <Link href="/docs#customization" className="text-[#A78BFA]/60 hover:text-[#A78BFA]">→ Docs</Link>
         </p>
       </section>
 
       {/* ── PRICING ──────────────────────────────────────────────────────────── */}
       <section id="pricing" className="max-w-3xl mx-auto px-6 pb-24">
-        <h2 className="text-xl font-bold text-center mb-2">料金</h2>
-        <p className="text-center text-white/35 text-sm mb-10">AIサービスにしては珍しく、Freeで本当に使える</p>
+        <h2 className="text-xl font-bold text-center mb-2">Pricing</h2>
+        <p className="text-center text-white/35 text-sm mb-10">Unusually honest for an AI tool — Free actually works</p>
         <div className="grid md:grid-cols-2 gap-5">
           <div className="border border-white/10 rounded-2xl p-6">
             <h3 className="font-bold text-lg mb-1">Free</h3>
-            <p className="text-3xl font-bold mb-0.5">¥0</p>
-            <p className="text-white/30 text-xs mb-6">ずっと無料</p>
+            <p className="text-3xl font-bold mb-0.5">$0</p>
+            <p className="text-white/30 text-xs mb-6">Free forever</p>
             <ul className="space-y-2 text-sm mb-7">
               {[
-                ['1プロジェクト', true],
-                ['月30フィードバック', true],
-                ['ダッシュボード（グラフ含む）', true],
-                ['AI感情分析', false],
-                ['週次AIサマリー', false],
-                ['Slack通知', false],
-                ['CSV出力', false],
+                ['1 project', true],
+                ['30 feedbacks / month', true],
+                ['Dashboard + charts', true],
+                ['AI sentiment analysis', false],
+                ['Weekly AI digest', false],
+                ['Slack notifications', false],
+                ['CSV export', false],
               ].map(([label, active]) => (
                 <li key={label as string} className={active ? 'text-white/70' : 'text-white/20'}>
                   {active ? '✓' : '✗'} {label}
@@ -299,26 +331,26 @@ export default function LandingPage() {
               href="/dashboard"
               className="block text-center border border-white/15 text-white/60 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-white transition-all"
             >
-              無料で始める
+              Start Free
             </Link>
           </div>
           <div className="border border-[#A78BFA]/40 rounded-2xl p-6 relative bg-[#A78BFA]/5">
             <div className="absolute -top-3 left-6 bg-[#A78BFA] text-white text-xs px-3 py-1 rounded-full font-semibold">
-              おすすめ
+              Recommended
             </div>
             <h3 className="font-bold text-lg mb-1 text-[#A78BFA]">Pro</h3>
-            <p className="text-3xl font-bold mb-0.5">¥980<span className="text-sm font-normal text-white/40">/月</span></p>
-            <p className="text-white/30 text-xs mb-6">いつでもキャンセル可能</p>
+            <p className="text-3xl font-bold mb-0.5">$10<span className="text-sm font-normal text-white/40">/mo</span></p>
+            <p className="text-white/30 text-xs mb-6">Cancel anytime</p>
             <ul className="space-y-2 text-sm mb-7 text-white/75">
               {[
-                '複数プロジェクト管理',
-                'フィードバック無制限',
-                'Claude AI 感情分析',
-                '週次AIサマリー（毎週月曜）',
-                'Slack通知',
-                'CSV出力',
-                '「Powered by」非表示',
-                '業界ベンチマーク比較',
+                'Unlimited projects',
+                'Unlimited feedback',
+                'Claude AI sentiment analysis',
+                'Weekly AI digest (every Monday)',
+                'Slack notifications',
+                'CSV export',
+                'Remove "Powered by" badge',
+                'Industry benchmark comparison',
               ].map(label => (
                 <li key={label}>✓ {label}</li>
               ))}
@@ -327,7 +359,7 @@ export default function LandingPage() {
               href="/dashboard"
               className="block text-center bg-[#A78BFA] text-white py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity"
             >
-              Proで始める
+              Start Pro
             </Link>
           </div>
         </div>
@@ -335,22 +367,23 @@ export default function LandingPage() {
 
       {/* ── FINAL CTA ────────────────────────────────────────────────────────── */}
       <section className="max-w-3xl mx-auto px-6 pb-28 text-center">
-        <p className="text-white/25 font-mono text-sm mb-5">// 最後に一言</p>
+        <p className="text-white/25 font-mono text-sm mb-5">// one last thing</p>
         <h2 className="text-3xl font-bold mb-4">
-          作ったプロダクトが何を<br />
-          求められているか、知っていますか。
+          Your users have opinions.<br />
+          They just won&apos;t tell you —<br />
+          <span className="text-white/50">unless it&apos;s anonymous.</span>
         </h2>
         <p className="text-white/45 mb-8 leading-relaxed">
-          ユーザーは正直に言わない。匿名なら言う。<br />
-          Ghost Comment を今日から使えば、明日には答えが届いている。
+          Add Ghost Comment today.<br />
+          By tomorrow you&apos;ll know what your users actually think.
         </p>
         <Link
           href="/dashboard"
           className="inline-block bg-[#A78BFA] text-white px-10 py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity"
         >
-          今日から始める（無料）
+          Start Free Today
         </Link>
-        <p className="text-white/20 text-xs mt-4">クレジットカード不要 · 2分で導入完了</p>
+        <p className="text-white/20 text-xs mt-4">No credit card · 2-minute setup</p>
       </section>
 
       {/* Footer */}
@@ -362,7 +395,7 @@ export default function LandingPage() {
           <div className="flex gap-6 text-sm text-white/35">
             <Link href="/docs" className="hover:text-white transition-colors">Docs</Link>
             <a href="https://x.com/Yoko_ai_dev" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">X</a>
-            <a href="https://note.com/yoko_ai_logic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">note</a>
+            <a href="https://github.com/yokusern/ghost-comment" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
             <a href="https://yokoportofolio.vercel.app" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Portfolio</a>
           </div>
           <p className="text-white/15 text-xs">Made by YO-KO</p>
