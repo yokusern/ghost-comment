@@ -35,6 +35,7 @@ export default function ProjectPage() {
   const [copied, setCopied] = useState(false)
   const [filter, setFilter] = useState<'all' | 'positive' | 'negative' | 'neutral'>('all')
   const [activeTab, setActiveTab] = useState<'feedbacks' | 'benchmark'>('feedbacks')
+  const [referrerFilter, setReferrerFilter] = useState<'all' | 'x' | 'google' | 'direct' | 'other'>('all')
 
   useEffect(() => {
     if (!user || !projectId) return
@@ -113,7 +114,16 @@ export default function ProjectPage() {
   const myPositiveRate = analyzedCount > 0 ? Math.round((positiveCount / analyzedCount) * 100) : null
   const myNegativeRate = analyzedCount > 0 ? Math.round((negativeCount / analyzedCount) * 100) : null
 
-  const filtered = filter === 'all' ? feedbacks : feedbacks.filter(f => f.sentiment === filter)
+  function classifyReferrer(ref: string | null): 'x' | 'google' | 'direct' | 'other' {
+    if (!ref) return 'direct'
+    if (/twitter\.com|x\.com/i.test(ref)) return 'x'
+    if (/google\./i.test(ref)) return 'google'
+    return 'other'
+  }
+
+  const filtered = feedbacks
+    .filter(f => filter === 'all' || f.sentiment === filter)
+    .filter(f => referrerFilter === 'all' || classifyReferrer(f.referrer) === referrerFilter)
   const isPro = userDoc?.plan === 'pro'
 
   if (loading) return (
@@ -197,6 +207,21 @@ export default function ProjectPage() {
 
           {activeTab === 'feedbacks' && (
             <div className="flex items-center gap-2 ml-auto flex-wrap">
+              {/* Referrer filter */}
+              {(['all', 'x', 'google', 'direct', 'other'] as const).map(r => (
+                <button
+                  key={r}
+                  onClick={() => setReferrerFilter(r)}
+                  className={`text-xs px-3 py-1 rounded-full border transition-colors ${
+                    referrerFilter === r
+                      ? 'bg-white/15 border-white/40 text-white'
+                      : 'border-white/10 text-white/30 hover:text-white/50'
+                  }`}
+                >
+                  {r === 'all' ? '全流入' : r === 'x' ? 'X' : r === 'google' ? 'Google' : r === 'direct' ? '直接' : 'その他'}
+                </button>
+              ))}
+              <span className="text-white/10 mx-1">|</span>
               {(['all', 'positive', 'negative', 'neutral'] as const).map(f => (
                 <button
                   key={f}

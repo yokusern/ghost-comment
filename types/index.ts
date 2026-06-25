@@ -30,7 +30,9 @@ export interface Feedback {
   text: string
   rating: number | null // 1-5
   pageUrl: string
+  referrer: string | null
   device: 'mobile' | 'desktop'
   sentiment: 'positive' | 'negative' | 'neutral' | null
+  sid: string | null
   createdAt: number
 }

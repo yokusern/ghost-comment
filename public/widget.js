@@ -8,14 +8,41 @@
     return;
   }
 
-  var API_BASE = 'https://ghost-comment.vercel.app';
-  var position = (script && script.getAttribute('data-position')) || 'right';
+  var API_BASE = 'https://ghost-comment-six.vercel.app';
+  var position  = (script && script.getAttribute('data-position')) || 'right';
   var accentColor = (script && script.getAttribute('data-color')) || '#A78BFA';
-  var promptText = (script && script.getAttribute('data-prompt')) || 'フィードバックを送る';
-  var device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+  var promptText  = (script && script.getAttribute('data-prompt')) || null;
+  var locale  = (script && script.getAttribute('data-locale')) || 'ja';
+  var delayMs = parseInt((script && script.getAttribute('data-delay')) || '0', 10) * 1000;
+  var device  = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 
-  // Anonymous session fingerprint — no cookies, no PII
-  // Hashes UA + screen resolution + timezone to a 8-char hex ID
+  // ── I18N ────────────────────────────────────────────────────────────────────
+  var i18n = {
+    ja: {
+      title: 'フィードバックを送る',
+      placeholder: '本音を聞かせてください…',
+      submit: '送信する',
+      submitting: '送信中…',
+      thanksTitle: 'ありがとう！',
+      thanksBody: 'あなたの声が開発者に届きました',
+      ctaText: 'あなたのサイトにも導入する →',
+      ariaLabel: 'フィードバックを送る',
+    },
+    en: {
+      title: 'Send Feedback',
+      placeholder: 'Tell us what you really think...',
+      submit: 'Submit',
+      submitting: 'Sending…',
+      thanksTitle: 'Thank you!',
+      thanksBody: 'Your voice reached the developer 👻',
+      ctaText: 'Add this to your site →',
+      ariaLabel: 'Send Feedback',
+    },
+  };
+  var t = i18n[locale] || i18n['ja'];
+  var defaultPrompt = promptText || t.placeholder;
+
+  // ── Anonymous session fingerprint ────────────────────────────────────────────
   function sessionId() {
     var raw = [navigator.userAgent, screen.width, screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
     var h = 0;
@@ -26,19 +53,23 @@
   }
   var sid = sessionId();
 
-  // ── Styles ──────────────────────────────────────────────────────────────
+  // ── Styles ──────────────────────────────────────────────────────────────────
+  var side = (position === 'left') ? 'left:20px;' : 'right:20px;';
+  var panelSide = (position === 'left') ? 'left:16px;' : 'right:16px;';
   var css = [
     '#gc-btn{',
-      'position:fixed;bottom:20px;' + (position === 'left' ? 'left:20px;' : 'right:20px;'),
+      'position:fixed;bottom:20px;' + side,
       'width:52px;height:52px;background:' + accentColor + ';',
       'border:none;border-radius:50%;cursor:pointer;z-index:2147483647;',
       'font-size:24px;box-shadow:0 4px 16px rgba(0,0,0,.25);',
-      'transition:transform .2s,box-shadow .2s;display:flex;',
-      'align-items:center;justify-content:center;padding:0;',
+      'transition:transform .2s,box-shadow .2s,opacity .3s;',
+      'display:flex;align-items:center;justify-content:center;padding:0;',
+      'opacity:0;pointer-events:none;',
     '}',
+    '#gc-btn.gc-visible{opacity:1;pointer-events:all}',
     '#gc-btn:hover{transform:scale(1.08);box-shadow:0 6px 22px rgba(0,0,0,.3)}',
     '#gc-panel{',
-      'position:fixed;bottom:84px;' + (position === 'left' ? 'left:16px;' : 'right:16px;'),
+      'position:fixed;bottom:84px;' + panelSide,
       'width:320px;background:#16162a;',
       'border:1px solid rgba(167,139,250,.25);border-radius:16px;padding:20px;',
       'z-index:2147483646;box-shadow:0 8px 32px rgba(0,0,0,.35);',
@@ -72,48 +103,61 @@
     '}',
     '.gc-submit:hover{opacity:.88}',
     '.gc-submit:disabled{opacity:.5;cursor:default}',
-    '.gc-thanks{text-align:center;color:#fff;padding:16px 0}',
+    '.gc-thanks{text-align:center;color:#fff;padding:12px 0 8px}',
     '.gc-thanks .gc-big{font-size:40px;display:block;margin-bottom:8px}',
     '.gc-thanks strong{display:block;margin-bottom:4px;font-size:15px}',
-    '.gc-thanks p{margin:0;font-size:13px;color:rgba(255,255,255,.5)}',
-    '.gc-powered{text-align:center;margin-top:12px;font-size:11px;color:rgba(255,255,255,.25)}',
-    '.gc-powered a{color:rgba(167,139,250,.55);text-decoration:none}',
-    '.gc-powered a:hover{color:rgba(167,139,250,.9)}',
+    '.gc-thanks p{margin:0 0 14px;font-size:13px;color:rgba(255,255,255,.5)}',
+    '.gc-cta{',
+      'display:block;text-align:center;',
+      'color:rgba(255,255,255,.3);font-size:11px;',
+      'text-decoration:none;padding:6px 0;',
+      'transition:color .15s;',
+    '}',
+    '.gc-cta:hover{color:rgba(167,139,250,.8)}',
+    '.gc-powered{text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,.2)}',
+    '.gc-powered a{color:rgba(167,139,250,.45);text-decoration:none}',
+    '.gc-powered a:hover{color:rgba(167,139,250,.8)}',
   ].join('');
 
   var styleEl = document.createElement('style');
   styleEl.textContent = css;
   document.head.appendChild(styleEl);
 
-  // ── Button ───────────────────────────────────────────────────────────────
+  // ── Button ───────────────────────────────────────────────────────────────────
   var btn = document.createElement('button');
   btn.id = 'gc-btn';
-  btn.setAttribute('aria-label', 'フィードバックを送る');
+  btn.setAttribute('aria-label', t.ariaLabel);
   btn.textContent = '👻';
   document.body.appendChild(btn);
 
-  // ── Panel ────────────────────────────────────────────────────────────────
+  // Show button after delay
+  if (delayMs > 0) {
+    setTimeout(function() { btn.classList.add('gc-visible'); }, delayMs);
+  } else {
+    btn.classList.add('gc-visible');
+  }
+
+  // ── Panel ────────────────────────────────────────────────────────────────────
   var panel = document.createElement('div');
   panel.id = 'gc-panel';
   panel.innerHTML =
     '<div id="gc-inner">' +
-      '<p class="gc-title">' + promptText + '</p>' +
+      '<p class="gc-title">' + t.title + '</p>' +
       '<div class="gc-emoji-row">' +
         ['😡','😕','😐','🙂','😍'].map(function(e, i) {
           return '<span class="gc-emoji" data-val="' + (i+1) + '">' + e + '</span>';
         }).join('') +
       '</div>' +
-      '<textarea class="gc-textarea" placeholder="本音を聞かせてください…" maxlength="1000"></textarea>' +
-      '<button class="gc-submit">送信する</button>' +
+      '<textarea class="gc-textarea" placeholder="' + defaultPrompt + '" maxlength="1000"></textarea>' +
+      '<button class="gc-submit">' + t.submit + '</button>' +
       '<div class="gc-powered">Powered by <a href="' + API_BASE + '" target="_blank" rel="noopener">Ghost Comment</a></div>' +
     '</div>';
   document.body.appendChild(panel);
 
-  // ── State ────────────────────────────────────────────────────────────────
+  // ── State ────────────────────────────────────────────────────────────────────
   var isOpen = false;
   var selectedRating = null;
 
-  // emoji selection
   var emojis = panel.querySelectorAll('.gc-emoji');
   emojis.forEach(function(el) {
     el.addEventListener('click', function() {
@@ -123,14 +167,12 @@
     });
   });
 
-  // toggle
   btn.addEventListener('click', function(e) {
     e.stopPropagation();
     isOpen = !isOpen;
     panel.classList.toggle('gc-open', isOpen);
   });
 
-  // close on outside click
   document.addEventListener('click', function(e) {
     if (isOpen && !panel.contains(e.target) && e.target !== btn) {
       isOpen = false;
@@ -138,16 +180,16 @@
     }
   });
 
-  // submit
+  // ── Submit ───────────────────────────────────────────────────────────────────
   var submitBtn = panel.querySelector('.gc-submit');
-  var textarea = panel.querySelector('.gc-textarea');
+  var textarea  = panel.querySelector('.gc-textarea');
 
   submitBtn.addEventListener('click', function() {
     var text = textarea.value.trim();
     if (!text) { textarea.focus(); return; }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = '送信中…';
+    submitBtn.textContent = t.submitting;
 
     fetch(API_BASE + '/api/feedback', {
       method: 'POST',
@@ -157,6 +199,7 @@
         text: text,
         rating: selectedRating,
         pageUrl: location.href,
+        referrer: document.referrer || null,
         device: device,
         sid: sid,
       }),
@@ -166,17 +209,20 @@
       inner.innerHTML =
         '<div class="gc-thanks">' +
           '<span class="gc-big">👻</span>' +
-          '<strong>ありがとう！</strong>' +
-          '<p>あなたの声が開発者に届きました</p>' +
-        '</div>';
+          '<strong>' + t.thanksTitle + '</strong>' +
+          '<p>' + t.thanksBody + '</p>' +
+        '</div>' +
+        '<a class="gc-cta" href="' + API_BASE + '" target="_blank" rel="noopener">' +
+          t.ctaText +
+        '</a>';
       setTimeout(function() {
         isOpen = false;
         panel.classList.remove('gc-open');
-      }, 2800);
+      }, 3500);
     })
     .catch(function() {
       submitBtn.disabled = false;
-      submitBtn.textContent = '送信する';
+      submitBtn.textContent = t.submit;
     });
   });
 })();

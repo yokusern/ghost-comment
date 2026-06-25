@@ -51,7 +51,7 @@ const FEATURES = [
 const MOAT = [
   {
     title: 'データネットワーク効果',
-    desc: '1,000プロジェクトが集まると「SaaS系アプリの平均ネガティブ率は14%」という比較データが生まれる。これは自分で実装しても永遠に持てない。',
+    desc: 'プロジェクトが増えるほど、業界全体の傾向が見えてくる。自前では永遠に持てないデータが、ここに集まる。',
   },
   {
     title: '週次AI要約（Cron）',
@@ -356,7 +356,7 @@ export default function LandingPage() {
           <div className="flex gap-6 text-sm text-white/35">
             <Link href="/docs" className="hover:text-white transition-colors">Docs</Link>
             <a href="https://x.com/Yoko_ai_dev" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">X</a>
-            <a href="https://note.com/zen_ai_logic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">note</a>
+            <a href="https://note.com/yoko_ai_logic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">note</a>
             <a href="https://yokoportofolio.vercel.app" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Portfolio</a>
           </div>
           <p className="text-white/15 text-xs">Made by YO-KO</p>

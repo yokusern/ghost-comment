@@ -14,7 +14,7 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { projectId, text, rating, pageUrl, device, sid } = await req.json()
+    const { projectId, text, rating, pageUrl, referrer, device, sid } = await req.json()
 
     if (!projectId || typeof projectId !== 'string') {
       return NextResponse.json({ error: 'projectId required' }, { status: 400, headers: CORS_HEADERS })
@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
       rating: typeof rating === 'number' && rating >= 1 && rating <= 5 ? rating : null,
       pageUrl: typeof pageUrl === 'string' ? pageUrl.slice(0, 500) : '',
       device: device === 'mobile' ? 'mobile' : 'desktop',
+      referrer: typeof referrer === 'string' ? referrer.slice(0, 500) : null,
       sentiment: null,
       sid: typeof sid === 'string' ? sid.slice(0, 16) : null,
       createdAt: Date.now(),
