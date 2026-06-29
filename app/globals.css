@@ -1,20 +1,50 @@
 @import "tailwindcss";
 
+/* ── Design System: Ghost Comment ───────────────────────────────────────────
+   Canny.io / Crisp-style. Dark-native, code-forward, sharp.
+   Palette:
+     --bg:        #0A0A0B   (near-black)
+     --surface-1: #0F1118   (card background)
+     --surface-2: #151820   (highlight surface)
+     --border:    rgba(255,255,255,0.08)
+     --green:     oklch(72% 0.18 155)  ≈ #22C55E (bright signal green)
+     --green-dim: oklch(55% 0.15 155)  (dimmed for subtle use)
+     --text-0:    #FFFFFF
+     --text-1:    rgba(255,255,255,0.7)
+     --text-2:    rgba(255,255,255,0.35)
+─────────────────────────────────────────────────────────────────────────── */
+
 :root {
-  --accent: #A78BFA;
-  --bg: #0d0d1a;
+  --bg:        #0A0A0B;
+  --surface-1: #0F1118;
+  --surface-2: #151820;
+  --border:    rgba(255,255,255,0.08);
+  --green:     oklch(72% 0.18 155);
+  --green-hex: #22C55E;
+  --green-dim: oklch(55% 0.15 155);
+  --text-0:    #FFFFFF;
+  --text-1:    rgba(255,255,255,0.7);
+  --text-2:    rgba(255,255,255,0.35);
+  color-scheme: dark;
 }
 
-* {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   background: var(--bg);
-  color: white;
+  color: var(--text-0);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
 }
 
-::selection {
-  background: rgba(167, 139, 250, 0.3);
+::selection { background: rgba(34, 197, 94, 0.25); }
+
+/* Code font — Monaco-first for code blocks */
+code, pre, .font-mono { font-family: 'Monaco', 'Menlo', 'Consolas', monospace; }
+
+/* Nav frosted glass */
+.gc-nav {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }

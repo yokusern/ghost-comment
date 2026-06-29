@@ -87,14 +87,14 @@ export function CodeTabs() {
   return (
     <div className="rounded-xl overflow-hidden border border-white/10 text-left">
       {/* Tab bar */}
-      <div className="flex items-center bg-[#1a1a2e] border-b border-white/10 px-4 gap-1">
+      <div className="flex items-center bg-[#0F1118] border-b border-white/8 px-4 gap-1">
         {TABS.map(t => (
           <button
             key={t.id}
             onClick={() => setActive(t.id)}
             className={`px-3 py-2.5 text-xs font-medium transition-colors ${
               active === t.id
-                ? 'text-[#A78BFA] border-b-2 border-[#A78BFA]'
+                ? 'text-[#22C55E] border-b-2 border-[#22C55E]'
                 : 'text-white/40 hover:text-white/70'
             }`}
           >
@@ -111,7 +111,7 @@ export function CodeTabs() {
       </div>
 
       {/* Code */}
-      <div className="bg-[#0d0d1a] p-5 overflow-x-auto">
+      <div className="bg-[#050508] p-5 overflow-x-auto">
         <pre className="text-sm font-mono leading-relaxed">
           {snippet.code.split('\n').map((line, i) => (
             <div key={i} className="flex gap-4">
@@ -144,7 +144,7 @@ export function ComparisonTable() {
           <tr className="border-b border-white/10">
             <th className="text-left py-3 pr-4 text-white/40 font-normal"></th>
             <th className="text-left py-3 pr-4 text-white/40 font-normal">自前実装</th>
-            <th className="text-left py-3 text-[#A78BFA] font-semibold">Ghost Comment</th>
+            <th className="text-left py-3 text-[#22C55E] font-semibold">Ghost Comment</th>
           </tr>
         </thead>
         <tbody>
