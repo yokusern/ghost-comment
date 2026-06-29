@@ -72,7 +72,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[#0a0a14] text-white overflow-x-hidden">
 
       {/* Nav */}
-      <nav className="sticky top-0 z-30 bg-[#0a0a14]/95 backdrop-blur border-b border-white/8">
+      <nav className="sticky top-0 z-30 bg-[#0a0a14] border-b border-white/8">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
             <span>👻</span> Ghost Comment
@@ -102,12 +102,12 @@ export default function LandingPage() {
           <div>
             <div className="mb-8">
               <p className="text-white/30 text-sm font-mono mb-3">// なぜ作ったか</p>
-              <blockquote className="border-l-2 border-[#A78BFA] pl-5">
-                <p className="text-3xl md:text-4xl font-bold leading-tight">
+              <div className="pl-0">
+                <p className="text-3xl md:text-4xl font-bold leading-tight tracking-tight">
                   3ヶ月で30個作った。<br />
                   <span className="text-white/35">収益は¥0だった。</span>
                 </p>
-              </blockquote>
+              </div>
             </div>
             <p className="text-white/55 leading-relaxed mb-4">
               ユーザーが何を思っているかわからないから、何を直せばいいかわからない。
@@ -146,18 +146,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── NUMBERS ──────────────────────────────────────────────────────────── */}
-      <section className="border-y border-white/8 py-10">
-        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {/* ── SPECS ────────────────────────────────────────────────────────────── */}
+      <section className="border-y border-white/8 py-6">
+        <div className="max-w-5xl mx-auto px-6 flex flex-wrap gap-x-10 gap-y-3">
           {[
-            { n: '< 2min', sub: '導入時間' },
-            { n: '50KB', sub: 'ウィジェットサイズ' },
-            { n: '0', sub: 'Firebase設定' },
-            { n: '4+', sub: '対応フレームワーク' },
+            { n: '< 2分', sub: '導入時間' },
+            { n: '50KB以下', sub: 'ウィジェットサイズ' },
+            { n: 'Firebase設定ゼロ', sub: '外部DB不要' },
+            { n: '4フレームワーク対応', sub: 'React / Vue / Vanilla / Next' },
           ].map(s => (
-            <div key={s.sub}>
-              <div className="text-2xl font-bold text-[#A78BFA]">{s.n}</div>
-              <div className="text-xs text-white/35 mt-1">{s.sub}</div>
+            <div key={s.sub} className="flex items-baseline gap-2">
+              <span className="text-sm font-bold text-white">{s.n}</span>
+              <span className="text-xs text-white/30">— {s.sub}</span>
             </div>
           ))}
         </div>
@@ -165,7 +165,7 @@ export default function LandingPage() {
 
       {/* ── WHY NOT DIY ──────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-20">
-        <div className="text-center max-w-xl mx-auto mb-10">
+        <div className="mb-10">
           <p className="text-[#A78BFA] text-xs font-mono mb-3">// 自前で作れる。でも、作らなくていい。</p>
           <h2 className="text-2xl font-bold mb-3">その20時間、プロダクト改善に使った方がいい</h2>
           <p className="text-white/45 text-sm leading-relaxed">
@@ -180,13 +180,17 @@ export default function LandingPage() {
 
       {/* ── FEATURES ─────────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 pb-20">
-        <h2 className="text-xl font-bold mb-8 text-center">機能</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 className="text-xl font-bold mb-8">機能</h2>
+        <div className="grid sm:grid-cols-2 gap-4">
           {FEATURES.map(f => (
             <div key={f.title} className="border border-white/8 rounded-xl p-5 hover:border-white/18 transition-colors">
-              <div className="text-xl mb-3">{f.icon}</div>
-              <h3 className="font-semibold mb-1.5">{f.title}</h3>
-              <p className="text-white/45 text-sm leading-relaxed">{f.body}</p>
+              <div className="flex items-start gap-3">
+                <span className="text-xl shrink-0 mt-0.5">{f.icon}</span>
+                <div>
+                  <h3 className="font-semibold mb-1">{f.title}</h3>
+                  <p className="text-white/45 text-sm leading-relaxed">{f.body}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -219,7 +223,7 @@ export default function LandingPage() {
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 pb-20">
-        <h2 className="text-xl font-bold text-center mb-10">3ステップ</h2>
+        <h2 className="text-xl font-bold mb-10">3ステップ</h2>
         <div className="flex flex-col md:flex-row gap-4">
           {[
             { step: '01', title: 'プロジェクトを作る', desc: 'Googleログイン → プロジェクト名とURL入力 → Project IDを取得。1分。' },
