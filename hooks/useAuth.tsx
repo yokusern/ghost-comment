@@ -24,29 +24,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    return onAuthStateChanged(auth, async (u) => {
+    return onAuthStateChanged(auth, (u) => {
       setUser(u)
+      setLoading(false) // auth確定で即座にloading解除。userDoc取得はブロックしない
+
       if (u) {
         const ref = doc(db, 'users', u.uid)
-        const snap = await getDoc(ref)
-        if (!snap.exists()) {
-          const newDoc: UserDoc = {
-            uid: u.uid,
-            email: u.email || '',
-            displayName: u.displayName || '',
-            photoURL: u.photoURL || '',
-            plan: 'free',
-            createdAt: Date.now(),
+        getDoc(ref).then(async (snap) => {
+          if (!snap.exists()) {
+            const newDoc: UserDoc = {
+              uid: u.uid,
+              email: u.email || '',
+              displayName: u.displayName || '',
+              photoURL: u.photoURL || '',
+              plan: 'free',
+              createdAt: Date.now(),
+            }
+            await setDoc(ref, newDoc)
+            setUserDoc(newDoc)
+          } else {
+            setUserDoc(snap.data() as UserDoc)
           }
-          await setDoc(ref, newDoc)
-          setUserDoc(newDoc)
-        } else {
-          setUserDoc(snap.data() as UserDoc)
-        }
+        })
       } else {
         setUserDoc(null)
       }
-      setLoading(false)
     })
   }, [])
 

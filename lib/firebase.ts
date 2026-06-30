@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'placeholder',
@@ -15,3 +15,9 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 export const googleProvider = new GoogleAuthProvider()
+
+// 2回目以降のページ読み込みでキャッシュからデータを即時返す
+// failed-precondition = 複数タブで既に有効 / unimplemented = ブラウザ非対応 → どちらも無視でOK
+if (typeof window !== 'undefined') {
+  enableIndexedDbPersistence(db).catch(() => {})
+}
