@@ -37,14 +37,14 @@ export async function POST(req: NextRequest) {
 
   const db = getAdminDb()
 
-  // Free plan: 1プロジェクトまで
-  const userSnap = await db.collection('users').doc(uid).get()
+  // Free plan: 1プロジェクトまで（2クエリを並列実行）
+  const [userSnap, existing] = await Promise.all([
+    db.collection('users').doc(uid).get(),
+    db.collection('projects').where('ownerUid', '==', uid).get(),
+  ])
   const plan = userSnap.data()?.plan || 'free'
-  if (plan === 'free') {
-    const existing = await db.collection('projects').where('ownerUid', '==', uid).get()
-    if (existing.size >= 1) {
-      return NextResponse.json({ error: 'free plan allows 1 project' }, { status: 403 })
-    }
+  if (plan === 'free' && existing.size >= 1) {
+    return NextResponse.json({ error: 'free plan allows 1 project' }, { status: 403 })
   }
 
   const ref = db.collection('projects').doc()
